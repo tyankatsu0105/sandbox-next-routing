@@ -1,6 +1,6 @@
 import { RoutingObject } from "./path";
 
-type PathParams<Path extends string> =
+export type PathParams<Path extends string> =
   Path extends `:${infer Param}/${infer Rest}`
     ? Param | PathParams<Rest>
     : Path extends `:${infer Param}`

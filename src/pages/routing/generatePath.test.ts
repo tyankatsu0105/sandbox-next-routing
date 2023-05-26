@@ -1,8 +1,24 @@
 import * as Feature from "./generatePath";
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, expectTypeOf } from "vitest";
 
 describe("generatePath", () => {
+  describe("PathParams", () => {
+    describe("genericsに「:」のついたpath parametersにあたる文字列を含む文字列を渡すと、", () => {
+      it("path parametersの文字列のstring literalを返す", () => {
+        type Path = "/users/:userID";
+        expectTypeOf<Feature.PathParams<Path>>().toEqualTypeOf<"userID">();
+      });
+
+      it("path parametersの文字列のstring literal unionを返す", () => {
+        type Path = "/users/:userID/:postID";
+
+        expectTypeOf<
+          Feature.PathParams<"/users/:userID/:postID">
+        >().toEqualTypeOf<"userID" | "postID">();
+      });
+    });
+  });
   describe("getReplacedPath", () => {
     describe("path parameterにあたる文字列と対応するキーを持つオブジェクトがpathに存在しているとき、", () => {
       it("pathnameの値がそのキーの値に置換された文字列を返す", () => {
