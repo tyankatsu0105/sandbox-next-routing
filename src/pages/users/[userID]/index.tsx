@@ -8,7 +8,8 @@ const User = () => {
   return (
     <>
       <p>user </p>
-      <p>query params: {router.query.userCategory}</p>
+      <p>query params userCategory: {router.query.userCategory}</p>
+      <p>query params userStatus: {router.query.userStatus}</p>
       <p>path params: {router.query.userID}</p>
     </>
   );

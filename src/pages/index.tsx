@@ -1,17 +1,32 @@
 import Link from "next/link";
-import { URL } from "./routing";
+import { Routing, generatePath } from "./routing";
 
 export default function Home() {
   return (
     <>
       <div>
-        <Link href={URL.USERS}>users</Link>
+        <Link href={Routing.USERS}>users</Link>
       </div>
       <div>
         <Link href="/users/100">user 100</Link>
       </div>
       <div>
-        <Link href="/users/100?userCategory=hogehoge">
+        <Link
+          href={generatePath(Routing.USER, {
+            path: {
+              userID: "100",
+            },
+            query: {
+              userCategory: "admin",
+              userStatus: "active",
+            },
+          })}
+        >
+          user 100 query parameter userCategory userStatus
+        </Link>
+      </div>
+      <div>
+        <Link href="/users/100?userCategory=admin">
           user 100 query parameter userCategory
         </Link>
       </div>
