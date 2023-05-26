@@ -13,9 +13,9 @@ describe("generatePath", () => {
       it("path parametersの文字列のstring literal unionを返す", () => {
         type Path = "/users/:userID/:postID";
 
-        expectTypeOf<
-          Feature.PathParams<"/users/:userID/:postID">
-        >().toEqualTypeOf<"userID" | "postID">();
+        expectTypeOf<Feature.PathParams<Path>>().toEqualTypeOf<
+          "userID" | "postID"
+        >();
       });
     });
   });
