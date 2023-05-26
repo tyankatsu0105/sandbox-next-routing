@@ -7,9 +7,11 @@ export default function Home() {
       <div>
         <Link href={Routing.USERS}>users</Link>
       </div>
+
       <div>
         <Link href="/users/100">user 100</Link>
       </div>
+
       <div>
         <Link
           href={generatePath(Routing.USER, {
@@ -25,6 +27,7 @@ export default function Home() {
           user 100 query parameter userCategory userStatus
         </Link>
       </div>
+
       <div>
         <Link href="/users/100?userCategory=admin">
           user 100 query parameter userCategory

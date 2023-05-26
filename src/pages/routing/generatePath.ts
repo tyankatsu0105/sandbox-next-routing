@@ -51,6 +51,7 @@ export const getQueryString = (params: {
  *     userID: '123'
  *   }
  * })
+ * // /users/123?userCategory=admin&userStatus=active
  */
 export const generatePath = <Routing extends RoutingObject>(
   url: Routing,
