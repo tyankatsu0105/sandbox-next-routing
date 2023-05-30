@@ -7,7 +7,12 @@ describe("path", () => {
     it("返却されたオブジェクトは、RoutingObjectと同等である", () => {
       const routingObject = Feature.createRoutingObject({
         pathname: "/users/:userID",
-        queryParameterKeys: ["userCategory", "userStatus"],
+        queryParameters: [
+          {
+            key: "userCategory",
+            expectedValues: ["admin", "general"],
+          },
+        ],
       } as const);
 
       expectTypeOf<

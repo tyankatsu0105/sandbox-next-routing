@@ -19,9 +19,7 @@ export const getReplacedPath = (params: {
     return acc.replace(`:${key}`, value);
   }, params.pathname);
 
-export const getQueryString = (params: {
-  query: Record<string, string | undefined>;
-}) => {
+export const getQueryString = (params: { query: Record<string, unknown> }) => {
   const queryEntries = Object.entries(params.query);
   const hasQueryParameter = queryEntries.length > 0;
 
@@ -57,7 +55,15 @@ export const generatePath = <Routing extends RoutingObject>(
   url: Routing,
   parameters: {
     query: {
-      [key in Routing["queryParameterKeys"][number]]?: string;
+      [Key in Routing["queryParameters"][number]["key"]]?: Extract<
+        Routing["queryParameters"][number],
+        { key: Key }
+      > extends {
+        key: Key;
+        expectedValues?: readonly (infer ExpectedValues)[];
+      }
+        ? ExpectedValues | (string & {})
+        : string;
     };
     path: {
       [key in PathParams<Routing["pathname"]>]: string;

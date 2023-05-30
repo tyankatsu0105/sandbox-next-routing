@@ -10,10 +10,27 @@ export type RoutingObject = {
   /**
    * query parameterを利用する場合に指定する
    * @example
-   * '/users?userCategory=admin&userStatus=active'
-   * // => [ 'userCategory', 'userStatus ]
+   * '/users?userCategory=admin'
+   * // => [ {  key: 'userCategory',   } ]
    */
-  readonly queryParameterKeys: readonly string[];
+  readonly queryParameters: readonly {
+    /**
+     * query parameterのkey
+     * @example
+     * '/users?userCategory=admin'
+     * // => [ {  key: 'userCategory',   } ]
+     */
+    key: string;
+    /**
+     * valueとして入ってくる可能性のある値を指定する
+     *
+     * 何も指定しない場合はstringとして扱われる
+     * @example
+     * '/users?userCategory=admin'
+     * // => [ 'admin', 'general' ]
+     */
+    expectedValues?: readonly string[];
+  }[];
 };
 
 /**
@@ -35,20 +52,29 @@ export type RoutingObject = {
  */
 export const createRoutingObject = <
   Pathname extends RoutingObject["pathname"],
-  QueryParameterKeys extends RoutingObject["queryParameterKeys"]
+  QueryParameters extends RoutingObject["queryParameters"]
 >(routingObject: {
   pathname: Pathname;
-  queryParameterKeys: QueryParameterKeys;
+  queryParameters: QueryParameters;
 }) => routingObject;
 
 const USERS = createRoutingObject({
   pathname: "/users",
-  queryParameterKeys: [],
+  queryParameters: [],
 } as const);
 
 const USER = createRoutingObject({
   pathname: "/users/:userID",
-  queryParameterKeys: ["userCategory", "userStatus"],
+  queryParameters: [
+    {
+      key: "userCategory",
+      expectedValues: ["admin", "general"],
+    },
+    {
+      key: "userStatus",
+      expectedValues: ["active", "inactive"],
+    },
+  ],
 } as const);
 
 // const USERS = {
