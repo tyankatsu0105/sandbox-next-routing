@@ -1,2 +1,2 @@
-export { Routing } from "./path";
-export { generatePath } from "./generatePath";
+export { Routing } from './path'
+export { generatePath } from './generatePath'

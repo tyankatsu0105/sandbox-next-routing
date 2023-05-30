@@ -1,46 +1,41 @@
-import { RoutingObject } from "./path";
+import { PathParams, CreatedRoutingObject } from './shared'
 
-export type PathParams<Path extends string> =
-  Path extends `:${infer Param}/${infer Rest}`
-    ? Param | PathParams<Rest>
-    : Path extends `:${infer Param}`
-    ? Param
-    : Path extends `${any}:${infer Param}`
-    ? PathParams<`:${Param}`>
-    : never;
-
-export const getReplacedPath = (params: {
-  pathname: RoutingObject["pathname"];
-  path: Record<string, string>;
-}) =>
+export const getReplacedPath = (params: { pathname: CreatedRoutingObject['pathname']; path: Record<string, string> }) =>
   Object.entries(params.path).reduce((acc, [key, value]) => {
-    if (typeof value !== "string") return acc;
+    if (typeof value !== 'string') return acc
 
-    return acc.replace(`:${key}`, value);
-  }, params.pathname);
+    return acc.replace(`:${key}`, value)
+  }, params.pathname)
 
 export const getQueryString = (params: { query: Record<string, unknown> }) => {
-  const queryEntries = Object.entries(params.query);
-  const hasQueryParameter = queryEntries.length > 0;
+  const queryEntries = Object.entries(params.query)
+  const hasQueryParameter = queryEntries.length > 0
 
-  if (!hasQueryParameter) return "";
+  if (!hasQueryParameter) return ''
 
-  const queryString = queryEntries
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
+  const queryString = queryEntries.map(([key, value]) => `${key}=${value}`).join('&')
 
-  return `?${queryString}`;
-};
+  return `?${queryString}`
+}
 
 /**
  * pathを生成する
  * @example
- * const Routing = {
+ * const USER = {
  *   pathname: '/users/:userID',
- *   queryParameterKeys: ['userCategory', 'userStatus']
+ *   queryParameters: [
+ *     {
+ *       key: 'userCategory',
+ *       expectedValues: ['admin', 'general']
+ *     },
+ *    {
+ *      key: 'userStatus',
+ *      expectedValues: ['active', 'inactive']
+ *     }
+ *   ]
  * }
  *
- * generatePath(Routing, {
+ * generatePath(USER, {
  *   query: {
  *     userCategory: 'admin',
  *     userStatus: 'active'
@@ -51,31 +46,28 @@ export const getQueryString = (params: { query: Record<string, unknown> }) => {
  * })
  * // /users/123?userCategory=admin&userStatus=active
  */
-export const generatePath = <Routing extends RoutingObject>(
+export const generatePath = <Routing extends CreatedRoutingObject>(
   routingObject: Routing,
   parameters: {
     query: {
-      [Key in Routing["queryParameters"][number]["key"]]?: Extract<
-        Routing["queryParameters"][number],
-        { key: Key }
-      > extends {
-        key: Key;
-        expectedValues?: readonly (infer ExpectedValues)[];
+      [Key in Routing['__INTERNAL__queryParameters'][number]['key']]?: Extract<Routing['__INTERNAL__queryParameters'][number], { key: Key }> extends {
+        key: Key
+        expectedValues?: readonly (infer ExpectedValues)[]
       }
         ? ExpectedValues | (string & {})
-        : string;
-    };
+        : string
+    }
     path: {
-      [key in PathParams<Routing["pathname"]>]: string;
-    };
+      [key in PathParams<Routing['pathname']>]: string
+    }
   }
 ) => {
   const replacedPath = getReplacedPath({
     pathname: routingObject.pathname,
-    path: parameters.path,
-  });
+    path: parameters.path
+  })
 
-  const queryString = getQueryString({ query: parameters.query });
+  const queryString = getQueryString({ query: parameters.query })
 
-  return `${replacedPath}${queryString}`;
-};
+  return `${replacedPath}${queryString}`
+}
