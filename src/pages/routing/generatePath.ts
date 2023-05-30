@@ -52,7 +52,7 @@ export const getQueryString = (params: { query: Record<string, unknown> }) => {
  * // /users/123?userCategory=admin&userStatus=active
  */
 export const generatePath = <Routing extends RoutingObject>(
-  url: Routing,
+  routingObject: Routing,
   parameters: {
     query: {
       [Key in Routing["queryParameters"][number]["key"]]?: Extract<
@@ -71,7 +71,7 @@ export const generatePath = <Routing extends RoutingObject>(
   }
 ) => {
   const replacedPath = getReplacedPath({
-    pathname: url.pathname,
+    pathname: routingObject.pathname,
     path: parameters.path,
   });
 
