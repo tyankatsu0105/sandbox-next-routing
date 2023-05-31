@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Routing, generatePath } from "./routing";
+import { Routing } from "./routing";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
 
       <div>
         <Link
-          href={generatePath(Routing.USER, {
+          href={Routing.USER.generatePath({
             path: {
               userID: "100",
             },
