@@ -32,7 +32,7 @@ export type RoutingObject = {
 };
 
 /**
- * path parameter含む文字列から、path parameterにあたる文字列の string literal union を生成する
+ * path parameterを含む文字列から、path parameterにあたる文字列の string literal union を生成する
  *
  * @example
  * type Result = PathParams<'/users/:userID/:postID'>
@@ -75,66 +75,13 @@ export const getQueryString = (params: { query: Record<string, unknown> }) => {
   return `?${queryString}`;
 };
 
-/**
- * routingに関するオブジェクトを生成する
- * - 引数のオブジェクトは必ずconst assertionすること。
- *
- * @example
- * const USER = createRoutingObject({
- *  pathname: "/users/:userID",
- *   queryParameters: [
- *     {
- *       key: 'userCategory',
- *       expectedValues: ['admin', 'general']
- *     },
- *    {
- *      key: 'userStatus',
- *      expectedValues: ['active', 'inactive']
- *     }
- *   ]
- * } as const)
- */
-export const createRoutingObject = <
-  Pathname extends RoutingObject["pathname"],
-  QueryParameters extends RoutingObject["queryParameters"]
->(routingObject: {
-  pathname: Pathname;
-  queryParameters: QueryParameters;
-}) => {
-  const queryParameterKeys: QueryParameters[number]["key"][] =
-    routingObject.queryParameters.map((queryParameter) => queryParameter.key);
-  /**
-   * pathを生成する
-   * @example
-   * const USER = {
-   *   pathname: '/users/:userID',
-   *   queryParameters: [
-   *     {
-   *       key: 'userCategory',
-   *       expectedValues: ['admin', 'general']
-   *     },
-   *    {
-   *      key: 'userStatus',
-   *      expectedValues: ['active', 'inactive']
-   *     }
-   *   ]
-   * }
-   *
-   * USER.generatePath({
-   *   query: {
-   *     userCategory: 'admin',
-   *     userStatus: 'active'
-   *   },
-   *   path: {
-   *     userID: '123'
-   *   }
-   * })
-   * // /users/123?userCategory=admin&userStatus=active
-   */
+export const createGeneratePath = <CreatedRoutingObject extends RoutingObject>(
+  routingObject: CreatedRoutingObject
+) => {
   const generatePath = (parameters: {
     query: {
-      [Key in QueryParameters[number]["key"]]?: Extract<
-        QueryParameters[number],
+      [Key in CreatedRoutingObject["queryParameters"][number]["key"]]?: Extract<
+        CreatedRoutingObject["queryParameters"][number],
         { key: Key }
       > extends {
         key: Key;
@@ -144,7 +91,7 @@ export const createRoutingObject = <
         : string;
     };
     path: {
-      [key in PathParams<Pathname>]: string;
+      [key in PathParams<CreatedRoutingObject["pathname"]>]: string;
     };
   }) => {
     const replacedPath = getReplacedPath({
@@ -156,6 +103,23 @@ export const createRoutingObject = <
 
     return `${replacedPath}${queryString}`;
   };
+
+  return {
+    generatePath,
+  };
+};
+
+export const createRoutingObject = <
+  Pathname extends RoutingObject["pathname"],
+  QueryParameters extends RoutingObject["queryParameters"]
+>(routingObject: {
+  pathname: Pathname;
+  queryParameters: QueryParameters;
+}) => {
+  const queryParameterKeys: QueryParameters[number]["key"][] =
+    routingObject.queryParameters.map((queryParameter) => queryParameter.key);
+
+  const { generatePath } = createGeneratePath(routingObject);
 
   return {
     pathname: routingObject.pathname,
