@@ -1,3 +1,5 @@
+import { PathParams, getReplacedPath } from "./path_parameter";
+import { getQueryString } from "./query_parameter";
 export type RoutingObject = {
   /**
    * url文字列に当たる部分
@@ -29,50 +31,6 @@ export type RoutingObject = {
      */
     expectedValues?: readonly string[];
   }[];
-};
-
-/**
- * path parameterを含む文字列から、path parameterにあたる文字列の string literal union を生成する
- *
- * @example
- * type Result = PathParams<'/users/:userID/:postID'>
- * // type Result = 'userID' | 'postID'
- */
-export type PathParams<Path extends string> =
-  Path extends `:${infer Param}/${infer Rest}`
-    ? Param | PathParams<Rest>
-    : Path extends `:${infer Param}`
-    ? Param
-    : Path extends `${any}:${infer Param}`
-    ? PathParams<`:${Param}`>
-    : never;
-
-export const getReplacedPath = (params: {
-  pathname: RoutingObject["pathname"];
-  path: Record<string, string>;
-}) => {
-  const pathEntries = Object.entries(params.path);
-  const hasPathParameter = pathEntries.length > 0;
-
-  if (!hasPathParameter) return params.pathname;
-  return Object.entries(params.path).reduce((acc, [key, value]) => {
-    if (typeof value !== "string") return acc;
-
-    return acc.replace(`:${key}`, value);
-  }, params.pathname);
-};
-
-export const getQueryString = (params: { query: Record<string, unknown> }) => {
-  const queryEntries = Object.entries(params.query);
-  const hasQueryParameter = queryEntries.length > 0;
-
-  if (!hasQueryParameter) return "";
-
-  const queryString = queryEntries
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-
-  return `?${queryString}`;
 };
 
 export const createGeneratePath = <CreatedRoutingObject extends RoutingObject>(
