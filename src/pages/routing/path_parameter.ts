@@ -22,9 +22,8 @@ export const getReplacedPath = (params: {
   const hasPathParameter = pathEntries.length > 0;
 
   if (!hasPathParameter) return params.pathname;
-  return Object.entries(params.path).reduce((acc, [key, value]) => {
-    if (typeof value !== "string") return acc;
 
+  return Object.entries(params.path).reduce((acc, [key, value]) => {
     return acc.replace(`:${key}`, value);
   }, params.pathname);
 };

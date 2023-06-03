@@ -1,3 +1,15 @@
+/**
+ * オブジェクトからquery stringを生成する
+ * @example
+ * const params = {
+ *   query: {
+ *     userStatus: 'active',
+ *     userCategory: 'admin'
+ *   }
+ * }
+ * const querystring = getQueryString(params)
+ * // => '?userCategory=admin&userStatus=active'
+ */
 export const getQueryString = (params: { query: Record<string, unknown> }) => {
   const queryEntries = Object.entries(params.query);
   const hasQueryParameter = queryEntries.length > 0;
@@ -8,5 +20,7 @@ export const getQueryString = (params: { query: Record<string, unknown> }) => {
     .map(([key, value]) => `${key}=${value}`)
     .join("&");
 
-  return `?${queryString}`;
+  const result = `?${queryString}`;
+
+  return result;
 };
