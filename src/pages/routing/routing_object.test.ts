@@ -142,7 +142,7 @@ describe("routing_object", () => {
           queryParameters: [
             {
               key: "userCategory",
-              expectedValues: ["admin", "general"],
+              expectedValues: ["admin"],
             },
             {
               key: "userStatus",
@@ -158,7 +158,7 @@ describe("routing_object", () => {
         type Result = Parameters<typeof result.generatePath>[0]["query"];
 
         expectTypeOf<Result>().toEqualTypeOf<{
-          userCategory?: "admin" | "general" | (string & {}) | undefined;
+          userCategory?: "admin" | (string & {}) | undefined;
           userStatus?: "active" | "inactive" | (string & {}) | undefined;
           userType?: unknown;
         }>();
