@@ -4,53 +4,6 @@ import * as Feature from "./routing_object";
 
 describe("routing_object", () => {
   describe("createRoutingObject", () => {
-    describe("pathname", () => {
-      it("引数に渡したpathnameの文字列を返す", () => {
-        const routingObject = Feature.createRoutingObject({
-          pathname: "/users/:userID",
-          queryParameters: [
-            {
-              key: "userCategory",
-              expectedValues: ["admin", "general"],
-            },
-            {
-              key: "userStatus",
-              expectedValues: ["active", "inactive"],
-            },
-          ],
-        } as const);
-
-        const result = routingObject.pathname;
-
-        expect(result).toBe(routingObject.pathname);
-      });
-    });
-
-    describe("queryParameterKeys", () => {
-      it("引数に渡したqueryParametersのkeyの文字列を格納した配列を返す", () => {
-        const routingObject = Feature.createRoutingObject({
-          pathname: "/users/:userID",
-          queryParameters: [
-            {
-              key: "userCategory",
-              expectedValues: ["admin", "general"],
-            },
-            {
-              key: "userStatus",
-              expectedValues: ["active", "inactive"],
-            },
-          ],
-        } as const);
-
-        const result = routingObject.queryParameterKeys;
-
-        expect(result).toStrictEqual(["userCategory", "userStatus"]);
-        expectTypeOf<typeof result>().toEqualTypeOf<
-          ("userCategory" | "userStatus")[]
-        >();
-      });
-    });
-
     describe("generatePath", () => {
       it("createRoutingObjectのgeneratePathは、createGeneratePathから生成されたものである", () => {
         const routingObject = {

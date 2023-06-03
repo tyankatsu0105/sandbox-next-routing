@@ -1,6 +1,7 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, expectTypeOf } from "vitest";
 
 import * as Feature from "./query_parameter";
+import { createRoutingObject } from "./routing_object";
 
 describe("query_parameter", () => {
   describe("getQueryString", () => {
@@ -39,6 +40,26 @@ describe("query_parameter", () => {
       const result = Feature.getQueryString(params);
 
       expect(result).toBe("");
+    });
+  });
+
+  describe("QueryParameterKeys", () => {
+    it("routing objectのquery parametersから、keyのstring literal unionを返す", () => {
+      const routingObject = createRoutingObject({
+        pathname: "",
+        queryParameters: [
+          {
+            key: "userCategory",
+          },
+          {
+            key: "userStatus",
+          },
+        ],
+      } as const);
+
+      type Result = Feature.QueryParameterKeys<typeof routingObject>;
+
+      expectTypeOf<Result>().toEqualTypeOf<"userCategory" | "userStatus">();
     });
   });
 });

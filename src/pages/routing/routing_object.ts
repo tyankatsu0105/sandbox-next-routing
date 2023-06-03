@@ -83,14 +83,13 @@ export const createRoutingObject = <
    */
   queryParameters: QueryParameters;
 }) => {
-  const queryParameterKeys: QueryParameters[number]["key"][] =
-    routingObject.queryParameters.map((queryParameter) => queryParameter.key);
-
   const { generatePath } = createGeneratePath(routingObject);
 
   return {
-    pathname: routingObject.pathname,
-    queryParameterKeys,
+    /**
+     * 型のために利用する。実値での利用は禁止。
+     */
+    __FOR_TYPE__QUERY_PARAMETERS: routingObject.queryParameters,
     generatePath,
   };
 };
