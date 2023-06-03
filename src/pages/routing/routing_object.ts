@@ -86,6 +86,7 @@ export const createRoutingObject = <
   const { generatePath } = createGeneratePath(routingObject);
 
   return {
+    pathname: routingObject.pathname,
     /**
      * 型のために利用する。実値での利用は禁止。
      */

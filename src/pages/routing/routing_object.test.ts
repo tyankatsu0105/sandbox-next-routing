@@ -4,6 +4,28 @@ import * as Feature from "./routing_object";
 
 describe("routing_object", () => {
   describe("createRoutingObject", () => {
+    describe("pathname", () => {
+      it("引数に渡したpathnameの文字列を返す", () => {
+        const routingObject = Feature.createRoutingObject({
+          pathname: "/users/:userID",
+          queryParameters: [
+            {
+              key: "userCategory",
+              expectedValues: ["admin", "general"],
+            },
+            {
+              key: "userStatus",
+              expectedValues: ["active", "inactive"],
+            },
+          ],
+        } as const);
+
+        const result = routingObject.pathname;
+
+        expect(result).toBe(routingObject.pathname);
+      });
+    });
+
     describe("generatePath", () => {
       it("createRoutingObjectのgeneratePathは、createGeneratePathから生成されたものである", () => {
         const routingObject = {
