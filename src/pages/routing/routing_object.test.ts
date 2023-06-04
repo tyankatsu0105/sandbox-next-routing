@@ -50,17 +50,6 @@ describe("routing_object", () => {
   });
 
   describe("createGeneratePath", () => {
-    it("generatePathメソッドを返す", () => {
-      const routingObject = {
-        pathname: "/users/:userID",
-        queryParameters: [],
-      } as const;
-
-      const result = Feature.createGeneratePath(routingObject);
-
-      expect(result).toHaveProperty("generatePath");
-    });
-
     describe("generatePath", () => {
       it("引数に渡した値を元に、routingObject内のpathnameの値を変換した文字列を返す", () => {
         const routingObject = {
