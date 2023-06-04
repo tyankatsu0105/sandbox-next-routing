@@ -42,24 +42,4 @@ describe("query_parameter", () => {
       expect(result).toBe("");
     });
   });
-
-  describe("QueryParameterKeys", () => {
-    it("routing objectのquery parametersから、keyのstring literal unionを返す", () => {
-      const routingObject = createRoutingObject({
-        pathname: "",
-        queryParameters: [
-          {
-            key: "userCategory",
-          },
-          {
-            key: "userStatus",
-          },
-        ],
-      } as const);
-
-      type Result = Feature.QueryParameterKeys<typeof routingObject>;
-
-      expectTypeOf<Result>().toEqualTypeOf<"userCategory" | "userStatus">();
-    });
-  });
 });

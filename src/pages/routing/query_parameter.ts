@@ -1,5 +1,5 @@
-import { createRoutingObject } from "./routing_object";
-
+import { RoutingObject } from "./routing_object";
+import { useRouter } from "next/router";
 /**
  * オブジェクトからquery stringを生成する
  * @example
@@ -27,9 +27,16 @@ export const getQueryString = (params: { query: Record<string, unknown> }) => {
   return result;
 };
 
-/**
- * query parameterのkeyのstring literal unionを取得する
- */
-export type QueryParameterKeys<
-  CreatedRoutingObject extends ReturnType<typeof createRoutingObject>
-> = CreatedRoutingObject["__FOR_TYPE__QUERY_PARAMETERS"][number]["key"];
+export type QueryParameterMap<
+  QueryParameters extends RoutingObject["queryParameters"]
+> = {
+  [Key in QueryParameters[number]["key"]]: Extract<
+    QueryParameters[number],
+    { key: Key }
+  > extends {
+    key: Key;
+    expectedValues?: readonly (infer ExpectedValues)[];
+  }
+    ? ExpectedValues | (string & {})
+    : string;
+};

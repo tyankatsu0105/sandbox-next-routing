@@ -1,16 +1,16 @@
 import { useRouter } from "next/router";
+import { getTypedQuery, Routing } from "../../routing";
 
 const User = () => {
   const router = useRouter();
-
-  console.log({ router });
+  const { query } = getTypedQuery<(typeof Routing)["USER"]>(router);
 
   return (
     <>
       <p>user </p>
-      <p>query params userCategory: {router.query.userCategory}</p>
-      <p>query params userStatus: {router.query.userStatus}</p>
-      <p>path params: {router.query.userID}</p>
+      <p>query params userCategory: {query.userCategory}</p>
+      <p>query params userStatus: {query.userStatus}</p>
+      <p>path params: {query.userID}</p>
     </>
   );
 };
