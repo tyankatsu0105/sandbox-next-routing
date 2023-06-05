@@ -42,4 +42,31 @@ describe("query_parameter", () => {
       expect(result).toBe("");
     });
   });
+
+  describe("QueryParameterMap", () => {
+    it("should ", () => {
+      const routingObject = createRoutingObject({
+        pathname: "/users/:userID",
+        queryParameters: [
+          {
+            key: "userCategory",
+            expectedValues: ["admin", "general"],
+          },
+          {
+            key: "userStatus",
+            expectedValues: ["active", "inactive"],
+          },
+        ],
+      } as const);
+
+      type Result = Feature.QueryParameterMap<
+        (typeof routingObject)["__FOR_TYPE__QUERY_PARAMETERS"]
+      >;
+
+      expectTypeOf<Result>().toEqualTypeOf<{
+        userCategory: "admin" | "general" | (string & {});
+        userStatus: "active" | "inactive" | (string & {});
+      }>();
+    });
+  });
 });
