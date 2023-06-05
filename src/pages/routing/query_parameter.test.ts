@@ -1,7 +1,6 @@
-import { describe, it, expect, expectTypeOf } from "vitest";
-
 import * as Feature from "./query_parameter";
 import { createRoutingObject } from "./routing_object";
+import { expectTypeOf } from "expect-type";
 
 describe("query_parameter", () => {
   describe("getQueryString", () => {
@@ -44,7 +43,7 @@ describe("query_parameter", () => {
   });
 
   describe("QueryParameterMap", () => {
-    it("should ", () => {
+    it("createRoutingObjectの__FOR_TYPE__QUERY_PARAMETERSの型を渡すと、 queryParametersの要素のkeyをkey、expectedValuesの文字列のunionとstringをvalueとしたオブジェクトの型を返す", () => {
       const routingObject = createRoutingObject({
         pathname: "/users/:userID",
         queryParameters: [

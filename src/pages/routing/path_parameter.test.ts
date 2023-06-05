@@ -1,5 +1,4 @@
-import { describe, it, expectTypeOf, expect } from "vitest";
-
+import { expectTypeOf } from "expect-type";
 import * as Feature from "./path_parameter";
 
 describe("path_parameter", () => {

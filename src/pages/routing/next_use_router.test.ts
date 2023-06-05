@@ -1,5 +1,3 @@
-import { describe, it, expectTypeOf, expect } from "vitest";
-
 import * as Feature from "./next_use_router";
 
 describe("next_use_router", () => {

@@ -1,5 +1,4 @@
-import { describe, it, expectTypeOf, expect } from "vitest";
-
+import { expectTypeOf } from "expect-type";
 import * as Feature from "./routing_object";
 
 describe("routing_object", () => {
