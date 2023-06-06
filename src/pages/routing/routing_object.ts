@@ -36,7 +36,7 @@ export type RoutingObject = {
 /**
  * routingObjectを束縛したいため利用する
  */
-export const createGeneratePath = <CreatedRoutingObject extends RoutingObject>(
+export const generatePathCreator = <CreatedRoutingObject extends RoutingObject>(
   routingObject: CreatedRoutingObject
 ) => {
   const generatePath = (parameters: {
@@ -71,7 +71,7 @@ export const createRoutingObject = <
    */
   queryParameters: QueryParameters;
 }) => {
-  const { generatePath } = createGeneratePath(routingObject);
+  const { generatePath } = generatePathCreator(routingObject);
 
   return {
     pathname: routingObject.pathname,
