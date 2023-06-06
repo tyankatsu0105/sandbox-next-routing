@@ -8,7 +8,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-const typedUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+const typedUseRouter = useRouter as jest.MockedFn<typeof useRouter>;
 
 describe("next_use_router", () => {
   describe("getTypedQuery", () => {
