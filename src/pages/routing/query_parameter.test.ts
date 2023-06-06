@@ -67,5 +67,29 @@ describe("query_parameter", () => {
         userStatus: "active" | "inactive" | (string & {});
       }>();
     });
+
+    it("expectedValuesを指定しない場合、string型になる", () => {
+      const routingObject = createRoutingObject({
+        pathname: "/users/:userID",
+        queryParameters: [
+          {
+            key: "userCategory",
+            expectedValues: ["admin", "general"],
+          },
+          {
+            key: "userStatus",
+          },
+        ],
+      } as const);
+
+      type Result = Feature.QueryParameterMap<
+        (typeof routingObject)["__FOR_TYPE__QUERY_PARAMETERS"]
+      >;
+
+      expectTypeOf<Result>().toEqualTypeOf<{
+        userCategory: "admin" | "general" | (string & {});
+        userStatus: string;
+      }>();
+    });
   });
 });

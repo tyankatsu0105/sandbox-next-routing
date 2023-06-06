@@ -35,7 +35,7 @@ export type QueryParameterMap<
     { key: Key }
   > extends {
     key: Key;
-    expectedValues?: readonly (infer ExpectedValues)[];
+    expectedValues: readonly (infer ExpectedValues)[];
   }
     ? ExpectedValues | (string & {})
     : string;

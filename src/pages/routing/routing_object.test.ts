@@ -123,7 +123,7 @@ describe("routing_object", () => {
         expectTypeOf<Result>().toEqualTypeOf<{
           userCategory?: "admin" | (string & {}) | undefined;
           userStatus?: "active" | "inactive" | (string & {}) | undefined;
-          userType?: unknown;
+          userType?: string;
         }>();
       });
     });

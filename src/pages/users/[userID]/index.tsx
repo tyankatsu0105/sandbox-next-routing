@@ -10,6 +10,7 @@ const User = () => {
       <p>user </p>
       <p>query params userCategory: {query.userCategory}</p>
       <p>query params userStatus: {query.userStatus}</p>
+      <p>query params userType: {query.userType}</p>
       <p>path params: {query.userID}</p>
     </>
   );

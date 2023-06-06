@@ -16,6 +16,9 @@ const USER = createRoutingObject({
       key: "userStatus",
       expectedValues: ["active", "inactive"],
     },
+    {
+      key: "userType",
+    },
   ],
 } as const);
 
