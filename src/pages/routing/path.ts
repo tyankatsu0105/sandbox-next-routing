@@ -1,11 +1,11 @@
-import { createRoutingObject } from "./routing_object";
+import { createURLObject } from "./url_object";
 
-const USERS = createRoutingObject({
+const USERS = createURLObject({
   pathname: "/users",
   queryParameters: [],
 } as const);
 
-const USER = createRoutingObject({
+const USER = createURLObject({
   pathname: "/users/:userID",
   queryParameters: [
     {

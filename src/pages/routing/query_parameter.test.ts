@@ -1,5 +1,5 @@
 import * as Feature from "./query_parameter";
-import { createRoutingObject } from "./routing_object";
+import { createURLObject } from "./url_object";
 import { expectTypeOf } from "expect-type";
 
 describe("query_parameter", () => {
@@ -43,8 +43,8 @@ describe("query_parameter", () => {
   });
 
   describe("QueryParameterMap", () => {
-    it("createRoutingObjectの__FOR_TYPE__QUERY_PARAMETERSの型を渡すと、 queryParametersの要素のkeyをkey、expectedValuesの文字列のunionとstringをvalueとしたオブジェクトの型を返す", () => {
-      const routingObject = createRoutingObject({
+    it("createURLObjectの__FOR_TYPE__QUERY_PARAMETERSの型を渡すと、 queryParametersの要素のkeyをkey、expectedValuesの文字列のunionとstringをvalueとしたオブジェクトの型を返す", () => {
+      const urlObject = createURLObject({
         pathname: "/users/:userID",
         queryParameters: [
           {
@@ -59,7 +59,7 @@ describe("query_parameter", () => {
       } as const);
 
       type Result = Feature.QueryParameterMap<
-        (typeof routingObject)["__FOR_TYPE__QUERY_PARAMETERS"]
+        (typeof urlObject)["__FOR_TYPE__QUERY_PARAMETERS"]
       >;
 
       expectTypeOf<Result>().toEqualTypeOf<{
@@ -69,7 +69,7 @@ describe("query_parameter", () => {
     });
 
     it("expectedValuesを指定しない場合、string型になる", () => {
-      const routingObject = createRoutingObject({
+      const urlObject = createURLObject({
         pathname: "/users/:userID",
         queryParameters: [
           {
@@ -83,7 +83,7 @@ describe("query_parameter", () => {
       } as const);
 
       type Result = Feature.QueryParameterMap<
-        (typeof routingObject)["__FOR_TYPE__QUERY_PARAMETERS"]
+        (typeof urlObject)["__FOR_TYPE__QUERY_PARAMETERS"]
       >;
 
       expectTypeOf<Result>().toEqualTypeOf<{

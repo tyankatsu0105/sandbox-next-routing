@@ -1,6 +1,6 @@
 import { PathParams, getReplacedPath } from "./path_parameter";
 import { getQueryString, QueryParameterMap } from "./query_parameter";
-export type RoutingObject = {
+export type URLObject = {
   /**
    * url文字列に当たる部分
    * @example
@@ -26,7 +26,7 @@ export type RoutingObject = {
      *
      * 何も指定しない場合はstringとして扱われる
      * @example
-     * '/users?userCategory=admin'
+     * '/users?userCategory=admin' or '/users?userCategory=general'
      * // => [ 'admin', 'general' ]
      */
     expectedValues?: readonly string[];
@@ -34,17 +34,17 @@ export type RoutingObject = {
 };
 
 /**
- * routingObjectを束縛したいため利用する
+ * urlObjectを束縛したいため利用する
  */
-export const generatePathCreator = <CreatedRoutingObject extends RoutingObject>(
-  routingObject: CreatedRoutingObject
+export const generatePathCreator = <CreatedURLObject extends URLObject>(
+  urlObject: CreatedURLObject
 ) => {
   const generatePath = (parameters: {
-    query: Partial<QueryParameterMap<CreatedRoutingObject["queryParameters"]>>;
-    path: Record<PathParams<CreatedRoutingObject["pathname"]>, string>;
+    query: Partial<QueryParameterMap<CreatedURLObject["queryParameters"]>>;
+    path: Record<PathParams<CreatedURLObject["pathname"]>, string>;
   }) => {
     const replacedPath = getReplacedPath({
-      pathname: routingObject.pathname,
+      pathname: urlObject.pathname,
       path: parameters.path,
     });
 
@@ -58,27 +58,30 @@ export const generatePathCreator = <CreatedRoutingObject extends RoutingObject>(
   };
 };
 
-export const createRoutingObject = <
-  Pathname extends RoutingObject["pathname"],
-  QueryParameters extends RoutingObject["queryParameters"]
->(routingObject: {
+/**
+ * NOTE: createURLObjectにわたすオブジェクトは必ずconst assertionをつけること
+ */
+export const createURLObject = <
+  Pathname extends URLObject["pathname"],
+  QueryParameters extends URLObject["queryParameters"]
+>(urlObject: {
   /**
-   * {@link RoutingObject['pathname']}
+   * {@link URLObject['pathname']}
    */
   pathname: Pathname;
   /**
-   * {@link RoutingObject['queryParameters']}
+   * {@link URLObject['queryParameters']}
    */
   queryParameters: QueryParameters;
 }) => {
-  const { generatePath } = generatePathCreator(routingObject);
+  const { generatePath } = generatePathCreator(urlObject);
 
   return {
-    pathname: routingObject.pathname,
+    pathname: urlObject.pathname,
     /**
      * 型のために利用する。実値での利用は禁止。
      */
-    __FOR_TYPE__QUERY_PARAMETERS: routingObject.queryParameters,
+    __FOR_TYPE__QUERY_PARAMETERS: urlObject.queryParameters,
     generatePath,
   };
 };

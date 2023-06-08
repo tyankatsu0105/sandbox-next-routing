@@ -1,7 +1,7 @@
 import * as Feature from "./next_use_router";
 import { useRouter } from "next/router";
 import { renderHook } from "@testing-library/react";
-import { createRoutingObject } from "./routing_object";
+import { createURLObject } from "./url_object";
 import { expectTypeOf } from "expect-type";
 
 jest.mock("next/router", () => ({
@@ -30,8 +30,8 @@ describe("next_use_router", () => {
       expect(result.current.query).toStrictEqual(queryObj);
     });
 
-    it("genericsにcreateRoutingで生成したroutingObjectの型を指定すると、optionalのquery parameterとrequiredのpath parameterがqueryプロパティに型付けされる", () => {
-      const routingObject = createRoutingObject({
+    it("genericsにcreateRoutingで生成したurlObjectの型を指定すると、optionalのquery parameterとrequiredのpath parameterがqueryプロパティに型付けされる", () => {
+      const urlObject = createURLObject({
         pathname: "/users/:userID",
         queryParameters: [
           {
@@ -49,7 +49,7 @@ describe("next_use_router", () => {
       }));
 
       const { result } = renderHook(() => {
-        return Feature.getTypedQuery<typeof routingObject>(useRouter());
+        return Feature.getTypedQuery<typeof urlObject>(useRouter());
       });
       type Result = typeof result.current.query;
 

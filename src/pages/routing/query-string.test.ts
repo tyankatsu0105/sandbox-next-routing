@@ -1,6 +1,6 @@
 import * as Feature from "./query-string";
 import QueryString from "query-string";
-import { createRoutingObject } from "./routing_object";
+import { createURLObject } from "./url_object";
 import { expectTypeOf } from "expect-type";
 
 describe("query_string", () => {
@@ -14,8 +14,8 @@ describe("query_string", () => {
       expect(result).toStrictEqual(resultQueryString);
     });
 
-    it("genericsにcreateRoutingで生成したroutingObjectの型を指定すると、optionalのquery parameterを型付けする", () => {
-      const routingObject = createRoutingObject({
+    it("genericsにcreateRoutingで生成したurlObjectの型を指定すると、optionalのquery parameterを型付けする", () => {
+      const urlObject = createURLObject({
         pathname: "/users/:userID",
         queryParameters: [
           {
@@ -30,7 +30,7 @@ describe("query_string", () => {
       } as const);
       const args = "?userCategory=admin&userStatus=active";
 
-      const result = Feature.parse<typeof routingObject>(args);
+      const result = Feature.parse<typeof urlObject>(args);
       type Result = typeof result;
 
       expect(result).toEqual({

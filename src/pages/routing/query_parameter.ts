@@ -1,4 +1,4 @@
-import { RoutingObject } from "./routing_object";
+import { URLObject } from "./url_object";
 import { useRouter } from "next/router";
 /**
  * オブジェクトからquery stringを生成する
@@ -28,7 +28,7 @@ export const getQueryString = (params: { query: Record<string, unknown> }) => {
 };
 
 export type QueryParameterMap<
-  QueryParameters extends RoutingObject["queryParameters"]
+  QueryParameters extends URLObject["queryParameters"]
 > = {
   [Key in QueryParameters[number]["key"]]: Extract<
     QueryParameters[number],

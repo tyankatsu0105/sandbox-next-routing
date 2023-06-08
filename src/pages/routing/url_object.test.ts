@@ -1,11 +1,11 @@
 import { expectTypeOf } from "expect-type";
-import * as Feature from "./routing_object";
+import * as Feature from "./url_object";
 
-describe("routing_object", () => {
-  describe("createRoutingObject", () => {
+describe("url_object", () => {
+  describe("createURLObject", () => {
     describe("pathname", () => {
       it("引数に渡したpathnameの文字列を返す", () => {
-        const routingObject = Feature.createRoutingObject({
+        const urlObject = Feature.createURLObject({
           pathname: "/users/:userID",
           queryParameters: [
             {
@@ -19,15 +19,15 @@ describe("routing_object", () => {
           ],
         } as const);
 
-        const result = routingObject.pathname;
+        const result = urlObject.pathname;
 
-        expect(result).toBe(routingObject.pathname);
+        expect(result).toBe(urlObject.pathname);
       });
     });
 
     describe("generatePath", () => {
-      it("createRoutingObjectのgeneratePathは、generatePathCreatorから生成されたものである", () => {
-        const routingObject = {
+      it("createURLObjectのgeneratePathは、generatePathCreatorから生成されたものである", () => {
+        const urlObject = {
           pathname: "/users/:userID",
           queryParameters: [
             {
@@ -37,21 +37,21 @@ describe("routing_object", () => {
           ],
         } as const;
 
-        const createdRoutingObject = Feature.createRoutingObject(routingObject);
+        const createdURLObject = Feature.createURLObject(urlObject);
 
         expectTypeOf<
           ReturnType<
-            typeof Feature.generatePathCreator<typeof routingObject>
+            typeof Feature.generatePathCreator<typeof urlObject>
           >["generatePath"]
-        >().toEqualTypeOf<(typeof createdRoutingObject)["generatePath"]>();
+        >().toEqualTypeOf<(typeof createdURLObject)["generatePath"]>();
       });
     });
   });
 
   describe("generatePathCreator", () => {
     describe("generatePath", () => {
-      it("引数に渡した値を元に、routingObject内のpathnameの値を変換した文字列を返す", () => {
-        const routingObject = {
+      it("引数に渡した値を元に、urlObject内のpathnameの値を変換した文字列を返す", () => {
+        const urlObject = {
           pathname: "/users/:userID",
           queryParameters: [
             {
@@ -66,7 +66,7 @@ describe("routing_object", () => {
         } as const;
         const parameters: Parameters<
           ReturnType<
-            typeof Feature.generatePathCreator<typeof routingObject>
+            typeof Feature.generatePathCreator<typeof urlObject>
           >["generatePath"]
         >[0] = {
           path: {
@@ -79,18 +79,18 @@ describe("routing_object", () => {
         };
 
         const result =
-          Feature.generatePathCreator(routingObject).generatePath(parameters);
+          Feature.generatePathCreator(urlObject).generatePath(parameters);
 
         expect(result).toBe("/users/123?userCategory=admin&userStatus=active");
       });
 
-      it("routingObjectのpathnameにpath parameter文字列を含んでいれば、pathを構築する際にキーがpath parameterのstring literalを型推論できる", () => {
-        const routingObject = {
+      it("urlObjectのpathnameにpath parameter文字列を含んでいれば、pathを構築する際にキーがpath parameterのstring literalを型推論できる", () => {
+        const urlObject = {
           pathname: "/users/:userID/:postID",
           queryParameters: [],
         } as const;
 
-        const result = Feature.generatePathCreator(routingObject);
+        const result = Feature.generatePathCreator(urlObject);
         type Result = Parameters<typeof result.generatePath>[0]["path"];
 
         expectTypeOf<Result>().toEqualTypeOf<{
@@ -99,8 +99,8 @@ describe("routing_object", () => {
         }>();
       });
 
-      it("routingObjectのqueryParametersにexpectedValuesが存在していれば、queryを構築する際にexpectedValuesに記入したstring literalを型推論できる", () => {
-        const routingObject = {
+      it("urlObjectのqueryParametersにexpectedValuesが存在していれば、queryを構築する際にexpectedValuesに記入したstring literalを型推論できる", () => {
+        const urlObject = {
           pathname: "/users/:userID",
           queryParameters: [
             {
@@ -117,7 +117,7 @@ describe("routing_object", () => {
           ],
         } as const;
 
-        const result = Feature.generatePathCreator(routingObject);
+        const result = Feature.generatePathCreator(urlObject);
         type Result = Parameters<typeof result.generatePath>[0]["query"];
 
         expectTypeOf<Result>().toEqualTypeOf<{
