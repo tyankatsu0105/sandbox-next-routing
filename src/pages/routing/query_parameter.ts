@@ -1,5 +1,5 @@
 import { URLObject } from "./url_object";
-import { useRouter } from "next/router";
+
 /**
  * オブジェクトからquery stringを生成する
  * @example
