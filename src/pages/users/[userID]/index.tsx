@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { getTypedQuery, Routing } from "../../routing";
+import { getTypedQuery, Routing } from "../../../libs/routing";
 
 const User = () => {
   const router = useRouter();

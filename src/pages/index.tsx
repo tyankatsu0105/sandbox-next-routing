@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Routing } from "./routing";
+import { Routing } from "../libs/routing";
 
 export default function Home() {
   return (
